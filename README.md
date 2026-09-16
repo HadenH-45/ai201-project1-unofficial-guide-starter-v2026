@@ -1,6 +1,6 @@
 # The Unofficial Guide
 
-<!-- Replace this line with your name and which corpus you picked. -->
+Haden Hicks, city_guides
 
 > **This file is your submission.** Fill it in as you go — most sections get
 > written during the milestone that produces them, not at the end.
@@ -26,6 +26,7 @@
      this repo.
 
      Milestone 5. -->
+I picked the campus guides corpus. This system can use this corpus to answer questions like where to find a particular kind of food. It can also answer questions about the seasons and when certain areas will be the most lively.
 
 ## Chunking Strategy
 
