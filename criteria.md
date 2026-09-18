@@ -23,9 +23,8 @@ For at least 4 of my 5 test questions, the retrieved chunks include one that
 contains the answer.
 
 **Why this target:**
-<!-- e.g. "One of my questions is about a topic only two documents mention, so
-     I expect that one to be hard." -->
 
+4 out of 5 as a target ensures that the downstream language model retireives relevant context for the large majority of queries while not over filtering.
 ---
 
 ## 2. Every answer names a source
@@ -33,9 +32,8 @@ contains the answer.
 Every answer the system produces names at least one source document.
 
 **Why this target:**
-<!-- Why all five and not four? What about your setup makes that achievable —
-     or what would have to go wrong for it not to be? -->
 
+A 100% strict requirement for sources is necessary to give response transparency for users to verify factual accuracy especially when giving advice using corpus information.
 ---
 
 ## 3. The relevance gate stops out-of-corpus questions
@@ -50,48 +48,33 @@ in at least 4 of 5 tries.
      just keep five of them, or the "4 of 5" above has nothing to be 4 of. -->
 
 **Why this target:**
-<!-- What did your distances look like when you set the cutoff in Milestone 4?
-     Was there a clean gap, or did the two groups overlap? -->
 
+The 4 out of 5 threshold for test cases gives a small margin that allows space for borderline embedding distances while ensuring the system is blocking irrelevant queries consistently.
 ---
 
 ## 4. Something about your chunks
 
-<!-- YOU WRITE THIS ONE.
-
-     How would you know if your chunks were the right size? Name something
-     countable or observable.
-
-     Examples of the right shape — don't copy these, they should come from
-     what you actually saw in Milestone 3:
-       - "At least 4 of 5 sampled chunks read as a complete thought, with no
-          sentence cut in half at either end."
-       - "No chunk is shorter than 200 characters, since anything below that
-          in my corpus turned out to be a heading with no content under it." -->
+When processing my corpus, at least 90% of the generated chunks contain complete sentences that have not been cutoff mid-sentence, while ensuring no chunk is under 20 characters in length.
+<!-- 
+      -->
 
 
 
 **Why this target:**
 
-
+I chose to have the 90% boundary and minimum length because fragmented chunks or sentences will lack meaning or context that leads to incomplete and innacurate answers
 
 ---
 
 ## 5. Your choice
 
-<!-- YOU WRITE THIS ONE TOO.
-
-     Pick something you actually care about getting right. It could be about
-     speed, about refusals, about a particular kind of question your corpus
-     handles badly, about source attribution being correct rather than merely
-     present — anything, as long as it names a number or an observable
-     outcome. -->
+For all 5 in-scope test questions, all 5 contain the expected keyword or phrase that I defined.
 
 
 
 **Why this target:**
 
-
+Having a 100% threshold for my 'expects' keywords and phrases means the response is written using facts found in the corpus.
 
 ---
 
