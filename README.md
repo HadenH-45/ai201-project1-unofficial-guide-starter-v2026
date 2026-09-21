@@ -121,10 +121,16 @@ cards only.
 
 **Question:**
 
+"How is the seafood at Halden Bay?"
+
 **Answer:**
 
-```
-```
+The seafood at Halden Bay is genuinely fresh because the two harbour restaurants buy directly from boats that land in the early morning. 
+
+Sources: `guide_halden_bay.md` and `guide_eating.md`.
+
+Sources retrieved: guide_eating.md, guide_halden_bay.md
+
 
 **My relevance cutoff:**
 
@@ -137,9 +143,21 @@ cards only.
 
      Milestone 4. -->
 
+I stick with the defaults of TOP_K = 5 and THRESHHOLD = 0.6.
+I decided to stick with these because the responses I recieved properly answered the question and sourced them from the corpus. Additionally, after testing other values against them, it did not result in better responses.
+
 | Question | In corpus? | Best distance |
-|---|---|---|
-|  |  |  |
+|"Is the museum in Marchwood wheelchair accessible?"|Yes|0.503|
+|"Is summer a good time to visit?"|Yes|0.478|
+|"How is the seafood at Halden Bay?"|Yes|0.250|
+|"Can I drive between towns?"|Yes|0.614|
+|"Where's the best place to take a walk?"|Yes|0.535|
+
+|"What is the capital of Mongolia?"|No|0.754|
+|"How do I change the oil in a diesel engine?"|No|0.888|
+|"Who won the 1994 World Cup?"|No|0.899|
+|"What is the recommended dosage of ibuprofen for a headache?"|No|0.825|
+|"How do I write a for loop in Rust?"|No|0.836|
 
 ## How I Used AI
 
@@ -154,7 +172,11 @@ cards only.
 
 **1.**
 
+I asked Claude to make a rough draft for the chunking function and leave detailed core points of functional decision making left for me to decide on.
+
 **2.**
+
+I asked Claude to read the chunks that were returned after running the chunking function and whether it thought these chunks were appropriate given the corpus.
 
 <!-- ── Stretch features ─────────────────────────────────────────────────────
      Doing one? Say so here BEFORE you start. A feature this README never
