@@ -82,22 +82,61 @@ def fallback_split(
 
 def split_documents(documents: list[Document]) -> list[Chunk]:
     """
-    Split documents into chunks. ⚠️ REPLACE THE BODY OF THIS IN MILESTONE 3.
-
-    Right now it just calls the fallback. That is the plain, generic behaviour
-    the brief is talking about.
-
-    When you write your own strategy, set `produced_by` to
-    "chunker.py::split_documents" so your README's Sample Chunks section names
-    the right function. `app.py chunks` prints that string for you.
-
-    Things worth thinking about before you write any code:
-      - Are your documents short posts or long guides?
-      - Is the useful information in one sentence, or spread over a paragraph?
-      - Would splitting on paragraph breaks keep more thoughts intact than
-        splitting on a character count?
+    Splits city guide documents into section-based chunks using Markdown headers (##)
+    
+    Each chunk retains the main document heading and section heading
+    to preserve complete context for vector search retrieval
     """
-    return fallback_split(documents)
+    chunks: list[Chunk] = []
+
+    for doc in documents:
+        text = doc.text.strip()
+        if not text:
+            continue
+
+        # Extract the main document title (first line starting with #)
+        lines = text.split("\n")
+        doc_title = ""
+        for line in lines:
+            if line.startswith("# "):
+                doc_title = line.strip()
+                break
+
+        # Split text into sections using Markdown level-2 headers (##)
+        # Split on '\n## ' to target section boundaries
+        sections = text.split("\n## ")
+
+        chunk_index = 0
+        for i, section in enumerate(sections):
+            section = section.strip()
+            if not section:
+                continue
+
+            # Reconstructs the section header if it's not the preamble
+            if i > 0:
+                section_text = f"## {section}"
+            else:
+                section_text = section
+
+            # Prepends the main document title for self-contained context if missing
+            if doc_title and not section_text.startswith("# "):
+                full_chunk_text = f"{doc_title}\n\n{section_text}"
+            else:
+                full_chunk_text = section_text
+
+            chunks.append(
+                Chunk(
+                    text=full_chunk_text,
+                    source=doc.source,
+                    index=chunk_index,
+                    produced_by="chunker.py::split_documents",
+                )
+            )
+            chunk_index += 1
+
+    return chunks
+ 
+    """return fallback_split(documents)"""
 
 
 def describe(chunks: list[Chunk]) -> str:
