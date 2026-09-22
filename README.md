@@ -205,15 +205,41 @@ I asked Claude to read the chunks that were returned after running the chunking 
 
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. Chunks contain complete sentences and no chunk is under 20 characters in length. | 90% | 100% | 100% | 100% | MET |
+| 5. All 5 contain the expected keyword or phrase that I defined| 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
 
 <!-- Underneath, paste the REAL output for each criterion from one of your
      runs — the actual text your system produced, not a description of it.
      Name the file and function that produced it. -->
+
+| 1.
+
+Yes, the city museum in Marchwood is step-free. 
+
+Source: `guide_accessibility.md`
+
+| 2.  
+
+June is an excellent time to visit everywhere, and it is specifically highlighted as one of the best months for Brightwater and a "sweet spot" for Halden Bay and Pellew Sands (source: `guide_seasons.md`, `guide_brightwater.md`, `guide_halden_bay.md`, `guide_pellew_sands.md`). 
+
+However, July and August vary: Brightwater goes quiet to the point of dullness, while Halden Bay and Pellew Sands become very busy, with Halden Bay facing major parking problems (source: `guide_seasons.md`, `guide_brightwater.md`, `guide_halden_bay.md`, `guide_pellew_sands.md`).
+
+| 3.
+
+The seafood at Halden Bay is genuinely fresh because the two harbour restaurants buy directly from boats that land in the early morning. 
+
+Sources: `guide_halden_bay.md` and `guide_eating.md`
+
+| 4. 
+
+Yes, you can drive between towns, as most visitors drive between villages in Corry Vale and driving is an option to get to places like Givens Mill from Brightwater or Corry Vale (*guide_corry_vale.md*, *guide_givens_mill.md*).
+
+| 5. 
+
+Based on the documents, the old railway trackbed from Kestrelford is the best walking in the region for the effort involved (guide_regional_transport.md).
 
 ## Verdicts
 
