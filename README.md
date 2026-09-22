@@ -254,11 +254,11 @@ Based on the documents, the old railway trackbed from Kestrelford is the best wa
 
 | # | Criterion | Verdict | How I decided |
 |---|---|---|---|
-| 1 |  |  |  |
-| 2 |  |  |  |
-| 3 |  |  |  |
-| 4 |  |  |  |
-| 5 |  |  |  |
+| 1 | Retrieved chunk contains the answer | MET | All three runs achieved 5/5, consistently exceeding the target threshold of 4 of 5. |
+| 2 | Every answer names a source | MET | Every generated answer named a source across all three runs, reaching 5/5 on each attempt and meeting the target. |
+| 3 | Gate stops out-of-corpus questions | MET | The relevance gate successfully filtered out-of-corpus questions 5/5 times across all three runs, exceeding the 4 of 5 target. |
+| 4 | Chunks contain complete sentences and no chunk is under 20 characters in length. | MET | All retrieved chunks met both structural constraints across all three runs, achieving 100% against the 90% target. |
+| 5 | All 5 contain the expected keyword or phrase that I defined | MET | The defined keywords or phrases were successfully present across all 5 questions in every run, hitting the 5/5 target. |
 
 ## Diagnoses
 
@@ -279,6 +279,8 @@ Based on the documents, the old railway trackbed from Kestrelford is the best wa
      low, and which one you'd tighten and to what.
 
      Milestone 3. -->
+
+I didn't miss any of the criterion I set. I don't believe my targets were set too low because they go beyond the bare minimum of having the correct answer, ensuring that it includes enough context surrounding the response and complete sentences to generate a complete idea. If I had to tighten one, then I would make the increase the minimum character's the chunk contains as 20 could be seen as a low bar.
 
 ## The Improvement
 
