@@ -170,6 +170,10 @@ I decided to stick with these because the responses I recieved properly answered
 
      Milestone 5. -->
 
+     I asked Google Gemini to format the real output of the responses into the requested format that included only the text, source, and function it was created by. I did this for both evaluation runs.
+
+     I asked Claude to help me implement a Hybrid Search method using the current store.py, and app.py. It guided me on navigating the files and functions, as well as what changes needed to be made.
+
 **1.**
 
 I asked Claude to make a rough draft for the chunking function and leave detailed core points of functional decision making left for me to decide on.
@@ -284,10 +288,15 @@ I didn't miss any of the criterion I set. I don't believe my targets were set to
 
 ## The Improvement
 
+I added hybrid search.
+
 **What I changed:**
+
+I integrated hybrid search to the store.py file using BM25 keyword matching with the ChromaDB vector embeddings.
 
 **Why I picked it:**
 
+I picked hybrid search because even though I met all retrieval targets on the first evaluation, adding BM25 parse search ensures I have
 <!-- Connect it to a specific diagnosis above in one sentence. If you can't,
      you picked a fix because it sounded impressive. -->
 
@@ -296,13 +305,37 @@ I didn't miss any of the criterion I set. I don't believe my targets were set to
 <!-- Same format, same five criteria, three runs each.
      `python run_eval.py --label after` -->
 
+**1. Is the museum in Marchwood wheelchair accessible?**
+
+> Yes, the city museum in Marchwood is step-free.
+> Source: guide_accessibility.md
+
+**2. Is summer a good time to visit?**
+
+> Whether summer is a good time depends on the location: June is considered excellent everywhere or a sweet spot for places like Halden Bay and Pellew Sands. However, July and August are very busy in Halden Bay and Pellew Sands (bringing parking problems), while Brightwater goes quiet to the point of dullness during those months.
+> (Sources: `guide_seasons.md`, `guide_halden_bay.md`, `guide_pellew_sands.md`, and `guide_brightwater.md`)
+
+**3. How is the seafood at Halden Bay?**
+
+> The seafood at Halden Bay is genuinely fresh, as the two harbour restaurants buy directly from the boats that land in the early morning.
+> Sources: `guide_halden_bay.md` and `guide_eating.md`
+
+**4. Can I drive between towns?**
+
+> Yes, most visitors drive between the villages in Corry Vale (`guide_corry_vale.md`). You can also drive between Brightwater and Givens Mill (`guide_givens_mill.md`), and drive from Brightwater to the valley mouth of Corry Vale (`guide_corry_vale.md`).
+
+**5. Where's the best place to take a walk?**
+
+> According to the documents, the best walking in the region for the effort involved is the old railway trackbed from Kestrelford, which runs six miles on an easy gradient (guide_regional_transport.md).
+
+
 | Criterion | Target | Run 1 | Run 2 | Run 3 | Verdict |
 |---|---|---|---|---|---|
-| 1. Retrieved chunk contains the answer | 4 of 5 |  |  |  |  |
-| 2. Every answer names a source | 5 of 5 |  |  |  |  |
-| 3. Gate stops out-of-corpus questions | 4 of 5 |  |  |  |  |
-| 4. | | | | | |
-| 5. | | | | | |
+| 1. Retrieved chunk contains the answer | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 2. Every answer names a source | 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 3. Gate stops out-of-corpus questions | 4 of 5 | 5/5 | 5/5 | 5/5 | MET |
+| 4. Chunks contain complete sentences and no chunk is under 20 characters in length. | 90% | 100% | 100% | 100% | MET |
+| 5. All 5 contain the expected keyword or phrase that I defined| 5 of 5 | 5/5 | 5/5 | 5/5 | MET |
 
 **Did it help?**
 
@@ -312,6 +345,8 @@ I didn't miss any of the criterion I set. I don't believe my targets were set to
      tell.
 
      Milestone 4. -->
+
+They run similarly with and without the hybrid search method. I think that this is likely because the RAG model was working well already and adding a hybrid search will only make it more consistent against a wider range of questions.
 
 ## What's Still Broken
 
@@ -323,9 +358,13 @@ I didn't miss any of the criterion I set. I don't believe my targets were set to
 
      Milestone 5. -->
 
+Nothing is broken at the moment all of my criterion are being met. I don't believe that this is due to having too weak of criterion.
+
 ## What I'd Do Differently
 
 <!-- Knowing what you know now — which of your five criteria would you write
      differently, and why?
 
      Milestone 5. -->
+
+     If if had to rewerite a criteria I would change "All 5 contain the expected keyword or phrase that I defined" to instead require only the phrase and just have the phrase be less strict. This would balance out having the keyword be not restrictive enough while ensuring that the phrase isn't too restrictive of a criteria.

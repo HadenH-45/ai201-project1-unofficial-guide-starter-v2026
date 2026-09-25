@@ -32,6 +32,7 @@ import chromadb  # noqa: E402
 import config
 from chunker import Chunk
 
+from rank_bm25 import BM25Okapi
 
 @dataclass
 class Result:
@@ -68,6 +69,7 @@ class _OnnxEmbedder:
     def encode(self, texts, show_progress_bar: bool = False):
         return [vector.tolist() for vector in self._ef(list(texts))]
 
+    
 
 def _sentence_transformer(name: str):
     """
@@ -218,6 +220,76 @@ def search(
             )
         )
     return results
+
+
+def hybrid_search(
+    question: str,
+    top_k: int | None = None,
+    corpus: str | None = None,
+    variant: str = "default",
+    k_rrf: int = 60,
+) -> list[Result]:
+    top_k = top_k or config.TOP_K
+    name = config.collection_name(corpus, variant)
+
+    try:
+        collection = _client().get_collection(name)
+    except Exception as exc:
+        raise RuntimeError(
+            f"No index called '{name}'. Run `python app.py index` first."
+        ) from exc
+
+    total_count = collection.count()
+    if total_count == 0:
+        return []
+
+    fetch_k = min(top_k * 2, total_count)
+
+    vector_results = search(question, top_k=fetch_k, corpus=corpus, variant=variant)
+
+    all_data = collection.get(include=["documents", "metadatas"])
+    all_docs = all_data.get("documents", [])
+    all_metas = all_data.get("metadatas", [])
+
+    tokenized_corpus = [doc.lower().split() for doc in all_docs]
+    bm25 = BM25Okapi(tokenized_corpus)
+
+    tokenized_query = question.lower().split()
+    bm25_scores = bm25.get_scores(tokenized_query)
+
+    top_bm25_indices = sorted(
+        range(len(bm25_scores)), key=lambda i: bm25_scores[i], reverse=True
+    )[:fetch_k]
+
+    bm25_results: list[Result] = []
+    for idx in top_bm25_indices:
+        meta = all_metas[idx] if idx < len(all_metas) else {}
+        bm25_results.append(
+            Result(
+                text=all_docs[idx],
+                source=str(meta.get("source", "unknown")),
+                label=f"{meta.get('source', 'unknown')}#{meta.get('index', 0)}",
+                distance=0.0,
+                produced_by=str(meta.get("produced_by", "unknown")),
+            )
+        )
+
+    rrf_scores: dict[str, float] = {}
+    doc_map: dict[str, Result] = {}
+
+    for rank, res in enumerate(vector_results, start=1):
+        key = f"{res.label}::{res.text}"
+        doc_map[key] = res
+        rrf_scores[key] = rrf_scores.get(key, 0.0) + (1.0 / (k_rrf + rank))
+
+    for rank, res in enumerate(bm25_results, start=1):
+        key = f"{res.label}::{res.text}"
+        if key not in doc_map:
+            doc_map[key] = res
+        rrf_scores[key] = rrf_scores.get(key, 0.0) + (1.0 / (k_rrf + rank))
+
+    sorted_keys = sorted(rrf_scores.keys(), key=lambda k: rrf_scores[k], reverse=True)
+    return [doc_map[k] for k in sorted_keys[:top_k]]
 
 
 def index_exists(corpus: str | None = None, variant: str = "default") -> bool:
